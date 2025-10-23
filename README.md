@@ -9,7 +9,7 @@ Este proyecto implementa un **servicio web JAX-WS** desarrollado en **Java SE 8*
 Antes de levantar el proyecto, asegúrate de tener instalado:
 
 - **JDK 8** → [Descargar JDK 8](https://drive.google.com/drive/folders/1_peK8YuGVreEfd8CUKFcarbcKse_4rFH)
-- **Apache NetBeans (versión 12 o superior)** → [Descargar NetBeans]([https://netbeans.apache.org/download/index.html](https://installers.friendsofapachenetbeans.org/))
+- **Apache NetBeans (versión 12 o superior)** → [Descargar NetBeans](https://installers.friendsofapachenetbeans.org/)
 - **Payara Server 4.1.1.161** → Descargar dentro de apache netbeans al configurar el servidor
 - **Microsoft JDBC Driver 8.4.1 para SQL Server** → [Descargar JDBC 8.4.1](https://drive.google.com/drive/folders/1-EvKMfMNFSHu1Oa0JfB-HQ5cnc-qhXIu)
 
