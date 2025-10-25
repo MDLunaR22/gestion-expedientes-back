@@ -1,7 +1,7 @@
 package wsService;
 
-import Estructura.csEmpresaM;
-import Modelo.csConexion;
+import modelo.csEmpresa;
+import dao.Conexion;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -17,7 +17,7 @@ public class srvEmpresa {
     @WebMethod(operationName = "crearEmpresa")
     public String crearEmpresa(String nombre, String direccion, String telefono, String email) {
         String sql = "INSERT INTO Empresa (nombre, direccion, telefono, email) VALUES (?, ?, ?, ?)";
-        try (Connection conn = csConexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nombre);
             ps.setString(2, direccion);
@@ -32,13 +32,13 @@ public class srvEmpresa {
     }
 
     @WebMethod(operationName = "listarEmpresas")
-    public List<csEmpresaM> listarEmpresas() {
-        List<csEmpresaM> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Empresa";
-        try (Connection conn = csConexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+    public List<csEmpresa> listarEmpresas() {
+        List<csEmpresa> lista = new ArrayList<>();
+        String sql = "SELECT * FROM empresa";
+        try (Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                csEmpresaM e = new csEmpresaM();
+                csEmpresa e = new csEmpresa();
                 e.setId(rs.getInt("idEmpresa"));
                 e.setNombre(rs.getString("nombre"));
                 e.setDireccion(rs.getString("direccion"));
@@ -53,15 +53,15 @@ public class srvEmpresa {
     }
 
     @WebMethod(operationName = "obtenerEmpresa")
-    public csEmpresaM obtenerEmpresa(int id) {
-        csEmpresaM emp = null;
+    public csEmpresa obtenerEmpresa(int id) {
+        csEmpresa emp = null;
         String sql = "SELECT * FROM Empresa WHERE idEmpresa = ?";
-        try (Connection conn = csConexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                emp = new csEmpresaM();
+                emp = new csEmpresa();
                 emp.setId(rs.getInt("idEmpresa"));
                 emp.setNombre(rs.getString("nombre"));
                 emp.setDireccion(rs.getString("direccion"));
@@ -77,7 +77,7 @@ public class srvEmpresa {
     @WebMethod(operationName = "actualizarEmpresa")
     public String actualizarEmpresa(int id, String nombre, String direccion, String telefono, String email) {
         String sql = "UPDATE Empresa SET nombre=?, direccion=?, telefono=?, email=? WHERE idEmpresa=?";
-        try (Connection conn = csConexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, nombre);
             ps.setString(2, direccion);
@@ -95,7 +95,7 @@ public class srvEmpresa {
     @WebMethod(operationName = "eliminarEmpresa")
     public String eliminarEmpresa(int id) {
         String sql = "DELETE FROM Empresa WHERE idEmpresa=?";
-        try (Connection conn = csConexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = Conexion.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
             ps.executeUpdate();

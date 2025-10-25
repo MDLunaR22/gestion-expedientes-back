@@ -1,18 +1,20 @@
-package Modelo;
+package dao;
 
-import Estructura.csUsuarioM;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import modelo.csUsuario;
 
-public class csUsuario {
+public class daoUsuario {
 
     // 🔹 LOGIN
-    public boolean login(String usuario, String password) {
+    public csUsuario login(String usuario, String password) {
         String sql = "SELECT idUsuario, usuario, [password], idEmpleado " +
                      "FROM Usuario WHERE usuario=? AND [password]=?";
-        try (Connection c = csConexion.getConnection();
+        csUsuario u = new csUsuario();
+        
+        try (Connection c = Conexion.getConnection();
              PreparedStatement st = c.prepareStatement(sql)) {
 
             st.setString(1, usuario);
@@ -20,25 +22,24 @@ public class csUsuario {
 
             try (ResultSet rs = st.executeQuery()) {
                 if (rs.next()) {
-                    csUsuarioM u = new csUsuarioM();
                     u.setIdUsuario(rs.getInt("idUsuario"));
                     u.setUsuario(rs.getString("usuario"));
                     u.setPassword(rs.getString("password")); // mapeado desde [password]
                     u.setIdEmpleado(rs.getInt("idEmpleado"));
-                    return true;
+                    return u;
                 }
             }
         } catch (SQLException e) {
             // Propaga para que el servicio cree un SOAPFault claro
             throw new RuntimeException("DB login error: " + e.getMessage(), e);
         }
-        return false;
+        return u;
     }
 
     // 🔹 REGISTRO
-    public boolean registrar(csUsuarioM usuario) {
+    public boolean registrar(modelo.csUsuario usuario) {
         String sql = "INSERT INTO Usuario (usuario, password, idEmpleado) VALUES (?, ?, ?)";
-        try (Connection conn = csConexion.getConnection();
+        try (Connection conn = Conexion.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, usuario.getUsuario());

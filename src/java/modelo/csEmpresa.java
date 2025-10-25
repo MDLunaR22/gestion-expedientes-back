@@ -1,6 +1,6 @@
-package Estructura;
+package modelo;
 
-public class csEmpresaM {
+public class csEmpresa {
 
     private int id;
     private String nombre;
@@ -9,10 +9,10 @@ public class csEmpresaM {
     private String email;
 
     // Constructores
-    public csEmpresaM() {
+    public csEmpresa() {
     }
 
-    public csEmpresaM(int id, String nombre, String direccion, String telefono) {
+    public csEmpresa(int id, String nombre, String direccion, String telefono) {
         this.id = id;
         this.nombre = nombre;
         this.direccion = direccion;

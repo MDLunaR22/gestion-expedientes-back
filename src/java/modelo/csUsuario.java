@@ -1,15 +1,15 @@
-package Estructura;
+package modelo;
 
-public class csUsuarioM {
+public class csUsuario {
     private int idUsuario;
     private String usuario;
     private String password;
     private Integer idEmpleado; // Puede ser null
 
-    public csUsuarioM() {
+    public csUsuario() {
     }
 
-    public csUsuarioM(int idUsuario, String usuario, String password, Integer idEmpleado) {
+    public csUsuario(int idUsuario, String usuario, String password, Integer idEmpleado) {
         this.idUsuario = idUsuario;
         this.usuario = usuario;
         this.password = password;
