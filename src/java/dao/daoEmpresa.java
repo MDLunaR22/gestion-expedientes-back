@@ -9,16 +9,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 
 public class daoEmpresa {
-    public void crear(modelo.csEmpresa e) {
-        String sql = "INSERT INTO Empresa(nombre, direccion, telefono) VALUES (?, ?, ?)";
+    public String crear(modelo.csEmpresa e) {
+        String sql = "INSERT INTO Empresa(nombre, direccion, telefono, email) VALUES (?, ?, ?)";
         try (Connection conn = Conexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, e.getNombre());
             stmt.setString(2, e.getDireccion());
             stmt.setString(3, e.getTelefono());
             stmt.executeUpdate();
+            return "Empresa creada con exito";
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return "Se obtuvo un error al crear la empresa " + ex.getMessage();
         }
     }
 
@@ -30,7 +32,7 @@ public class daoEmpresa {
              ResultSet rs = stmt.executeQuery(sql)) {
             while (rs.next()) {
                 empresas.add(new modelo.csEmpresa(
-                    rs.getInt("id"),
+                    rs.getInt("idEmpresa"),
                     rs.getString("nombre"),
                     rs.getString("direccion"),
                     rs.getString("telefono")
@@ -43,14 +45,14 @@ public class daoEmpresa {
     }
 
     public modelo.csEmpresa obtenerPorId(int id) {
-        String sql = "SELECT * FROM Empresa WHERE id = ?";
+        String sql = "SELECT * FROM Empresa WHERE idEmpresa = ?";
         try (Connection conn = Conexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 return new modelo.csEmpresa(
-                    rs.getInt("id"),
+                    rs.getInt("idEmpresa"),
                     rs.getString("nombre"),
                     rs.getString("direccion"),
                     rs.getString("telefono")
@@ -62,28 +64,33 @@ public class daoEmpresa {
         return null;
     }
 
-    public void actualizar(modelo.csEmpresa e) {
-        String sql = "UPDATE Empresa SET nombre=?, direccion=?, telefono=? WHERE id=?";
+    public String actualizar(modelo.csEmpresa e) {
+        String sql = "UPDATE Empresa SET nombre=?, direccion=?, telefono=?, email=? WHERE idEmpresa=?";
         try (Connection conn = Conexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, e.getNombre());
             stmt.setString(2, e.getDireccion());
             stmt.setString(3, e.getTelefono());
-            stmt.setInt(4, e.getId());
+            stmt.setString(4, e.getEmail());
+            stmt.setInt(5, e.getId());
             stmt.executeUpdate();
+            return "Empresa actualizada con exito";
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return "Hubo un problema al actualizar la Empresa" + ex.getMessage();
         }
     }
 
-    public void eliminar(int id) {
-        String sql = "DELETE FROM Empresa WHERE id=?";
+    public String eliminar(int id) {
+        String sql = "DELETE FROM Empresa WHERE idEmpresa=?";
         try (Connection conn = Conexion.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             stmt.executeUpdate();
+            return "Empresa eliminada con exito";
         } catch (SQLException ex) {
             ex.printStackTrace();
+            return "Hubo un problema al actualizar la Empresa " + ex.getMessage();
         }
     }
 }
